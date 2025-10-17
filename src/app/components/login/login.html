@@ -1,0 +1,23 @@
+<br>
+<div class="row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4">
+        <h2>Login Form</h2><br>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+           
+            <input type="email" placeholder="Enter your email" class="form-control" id="email" formControlName="email" [class.is-invalid]="isFieldInvalid('email')">
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('email')">
+                {{getFieldError("email")}}
+            </div><br>
+
+            <input type="password" placeholder="Enter your password" class="form-control" id="password" formControlName="password"  [class.is-invalid]="isFieldInvalid('password')">
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('password')">
+                {{getFieldError("password")}}
+            </div><br>
+
+            <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Submit</button>
+        </form>
+    </div>
+    <div class="col-sm-4"></div>
+</div>

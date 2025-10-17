@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management</title>
+    
+    <!-- ========== AESTHETIC ENHANCEMENTS (CSS) START ========== -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .table-wrapper {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .table-header {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .table-header h2 {
+            color: #2d3748;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .table-header p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: white;
+        }
+
+        .table thead tr {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .table thead th {
+            padding: 18px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: none;
+        }
+
+        .table thead th:first-child {
+            border-top-left-radius: 12px;
+        }
+
+        .table thead th:last-child {
+            border-top-right-radius: 12px;
+        }
+
+        .table tbody tr {
+            transition: all 0.3s ease;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .table tbody tr:hover {
+            background: linear-gradient(90deg, #f7fafc 0%, #edf2f7 100%);
+            transform: scale(1.01);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .table tbody td {
+            padding: 16px;
+            color: #2d3748;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        /* Custom Checkbox Styling */
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            position: relative;
+            appearance: none;
+            background: #fff;
+            border: 2px solid #cbd5e0;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="checkbox"]:hover {
+            border-color: #667eea;
+        }
+
+        input[type="checkbox"]:checked {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-size: 14px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Button Styling */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #f56565 0%, #c53030 100%);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #fc8181 0%, #e53e3e 100%);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #48bb78 0%, #2f855a 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #68d391 0%, #38a169 100%);
+        }
+
+        .m-2 {
+            margin: 8px;
+        }
+
+        .p-2 {
+            padding: 8px;
+        }
+
+        .delete-selected-wrapper {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .btn-delete-selected {
+            padding: 14px 32px;
+            font-size: 16px;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ID Badge Styling */
+        .id-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .table-wrapper {
+                padding: 20px;
+            }
+
+            .table thead th,
+            .table tbody td {
+                padding: 12px 8px;
+                font-size: 12px;
+            }
+
+            .btn {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+
+            .m-2 {
+                margin: 4px;
+            }
+        }
+    </style>
+    <!-- ========== AESTHETIC ENHANCEMENTS (CSS) END ========== -->
+</head>
+<body>
+    <div class="container">
+        <div class="table-wrapper">
+            <div class="table-header">
+                <h2>Student Management</h2>
+                <p>Manage your student records with ease</p>
+            </div>
+
+            <!-- ========== YOUR ORIGINAL CODE STARTS HERE ========== -->
+            <div class="table-container">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="p-2">Select</th>
+                            <th class="p-2">ID</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Password</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let s of students">
+                            <td>
+                                <input type="checkbox" (change)="selectIds(s.id!)">
+                            </td>
+                            <td class="p-2">
+                                <span class="id-badge">{{ s.id }}</span>
+                            </td>
+                            <td>{{ s.fullname }}</td>
+                            <td>{{ s.email }}</td>
+                            <td>{{ s.password }}</td>
+                            <td>
+                                <button class="btn btn-danger m-2" (click)="deleteStudent(s.id!)">Delete</button>
+                                <button class="btn btn-success m-2" [routerLink]="['/edit-student', s.id]">Profile Edit</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br>
+            <div class="delete-selected-wrapper">
+                <button class="btn btn-danger btn-delete-selected m-2" *ngIf="selectedStudents.length > 0" (click)="deletemultiplestudents()">Delete Selected Students</button>
+            </div>
+            <!-- ========== YOUR ORIGINAL CODE ENDS HERE ========== -->
+        </div>
+    </div>
+
+    <!-- ========== AESTHETIC ENHANCEMENTS (JS) START ========== -->
+    <script>
+        // Add smooth scroll behavior
+        document.documentElement.style.scrollBehavior = 'smooth';
+        
+        // Add hover effect sound (optional - can be removed)
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            });
+        });
+    </script>
+    <!-- ========== AESTHETIC ENHANCEMENTS (JS) END ========== -->
+</body>
+</html>

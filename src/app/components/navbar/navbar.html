@@ -1,0 +1,90 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm sticky-top">
+  <div class="container-fluid">
+    <!-- Brand with subtle hover effect -->
+    <a class="navbar-brand fw-bold fs-4 text-primary" routerLink="/">MyPortal</a>
+
+    <!-- Hamburger for mobile -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarContent" aria-controls="navbarContent"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar links -->
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link nav-anim" routerLink="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-anim" routerLink="/students">Student List</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-anim" routerLink="/add-student">Student Form</a>
+        </li>
+        <li class="nav-item" *ngIf="!isLoggedIn">
+          <a class="nav-link nav-anim" aria-current="page" routerLink="/login">Login</a>
+        </li>
+        <li class="nav-item" *ngIf="isLoggedIn">
+          <a class="nav-link nav-anim" aria-current="page" (click)="logout()">Logout</a>
+        </li>
+      </ul>
+
+      <!-- Search bar with smooth focus animation -->
+      <form class="d-flex position-relative">
+        <input class="form-control me-2 search-bar" type="search" placeholder="Search"
+          aria-label="Search">
+        <button class="btn btn-outline-success search-btn" type="submit">Go</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<!-- Custom CSS -->
+<style>
+  /* Smooth underline animation on hover */
+  .nav-anim {
+    position: relative;
+    transition: color 0.3s ease;
+  }
+  .nav-anim::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #0d6efd;
+    transition: width 0.3s ease;
+  }
+  .nav-anim:hover::after {
+    width: 100%;
+  }
+  .nav-anim:hover {
+    color: #0d6efd;
+  }
+
+  /* Search input animation on focus */
+  .search-bar {
+    width: 150px;
+    transition: width 0.4s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+  .search-bar:focus {
+    width: 250px;
+    box-shadow: 0 0 8px rgba(13, 110, 253, 0.5);
+  }
+
+  /* Button hover effect */
+  .search-btn {
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+  }
+  .search-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+
+  /* Optional: make navbar sticky */
+  .navbar {
+    z-index: 1000;
+  }
+</style>
